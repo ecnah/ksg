@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenya School of Government - Dashboard</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/dashboard.css">
+    <link rel="stylesheet" href="assets/styles/chatbot.css">
+</head>
+
+<body class="dark-theme">
+
+    <div id="dashboard-app" class="dashboard-container">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="nav-brand">
+                <i class="fa-solid fa-shapes"></i>
+                <span>Kenya School of Government</span>
+            </div>
+
+            <div class="nav-menu">
+                <a href="#" class="active">My Tickets</a>
+                <a href="#">Knowledge Base</a>
+                <a href="admin_login.html">Admin Portal</a>
+            </div>
+
+            <div class="nav-right" style="display: flex; align-items: center; gap: 1.5rem;">
+                <div class="notification-trigger" id="notifTrigger"
+                    style="position: relative; cursor: pointer; color: var(--text-muted); font-size: 1.2rem;">
+                    <i class="fa-solid fa-bell"></i>
+                    <div id="notifBadge"
+                        style="display: none; position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; font-size: 0.65rem; padding: 2px 5px; border-radius: 50%; font-weight: 800; border: 2px solid var(--bg-deep);">
+                        0</div>
+
+                    <!-- Notification Dropdown -->
+                    <div id="notifDropdown" class="notif-dropdown hidden">
+                        <div class="notif-header">
+                            <span>Notifications</span>
+                            <button onclick="markAllAsRead(event)">Mark all as read</button>
+                        </div>
+                        <div id="notifList" class="notif-list">
+                            <!-- JS injected items -->
+                            <div class="empty-notif">No new notifications</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-pill"
+                    style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">
+                    <div style="font-size: 0.85rem; font-weight: 600;" id="navUserName">Guest User</div>
+                    <div style="width: 32px; height: 32px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800;"
+                        id="navAvatar">G</div>
+                </div>
+            </div>
+
+
+        </nav>
+
+        <main class="main-content">
+            <!-- Header Section -->
+            <header class="page-header">
+                <div>
+                    <h1>New Issue Report</h1>
+                    <p>Submit a ticket to the relevant department for assistance.</p>
+                </div>
+
+                <div class="ticket-reference">
+                    <span class="ref-label">TICKET REFERENCE</span>
+                    <span class="ref-code" id="ticketToken">#LOADING...</span>
+                </div>
+            </header>
+
+            <!-- Step 1: Department Selection -->
+            <section class="step-section">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3>Select Department</h3>
+                </div>
+
+                <div class="department-grid">
+                    <!-- ICT -->
+                    <div class="dept-card selected" data-dept="ict">
+                        <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="dept-icon"><i class="fa-solid fa-desktop"></i></div>
+                        <h4>ICT</h4>
+                        <p>Technical support & hardware</p>
+                    </div>
+
+                    <!-- Admissions -->
+                    <div class="dept-card" data-dept="admissions">
+                        <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="dept-icon"><i class="fa-solid fa-user-pen"></i></div>
+                        <h4>Admissions</h4>
+                        <p>Registration & programs</p>
+                    </div>
+
+                    <!-- Reception -->
+                    <div class="dept-card" data-dept="reception">
+                        <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="dept-icon"><i class="fa-solid fa-bell-concierge"></i></div>
+                        <h4>Reception</h4>
+                        <p>Visits & guest support</p>
+                    </div>
+
+                    <!-- Finance -->
+                    <div class="dept-card" data-dept="finance">
+                        <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="dept-icon"><i class="fa-solid fa-coins"></i></div>
+                        <h4>Finance</h4>
+                        <p>Billing & accounts</p>
+                    </div>
+
+                    <!-- Catering -->
+                    <div class="dept-card" data-dept="catering">
+                        <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="dept-icon"><i class="fa-solid fa-utensils"></i></div>
+                        <h4>Catering</h4>
+                        <p>Food services & events</p>
+                    </div>
+
+                    <!-- Housekeeping -->
+                    <div class="dept-card" data-dept="housekeeping">
+                        <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="dept-icon"><i class="fa-solid fa-broom"></i></div>
+                        <h4>Housekeeping</h4>
+                        <p>Cleaning & maintenance</p>
+                    </div>
+
+                    <!-- HR -->
+                    <div class="dept-card" data-dept="hr">
+                        <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="dept-icon"><i class="fa-solid fa-people-group"></i></div>
+                        <h4>HR</h4>
+                        <p>Payroll & personnel</p>
+                    </div>
+
+                    <!-- Procurement -->
+                    <div class="dept-card" data-dept="procurement">
+                        <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="dept-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                        <h4>Procurement</h4>
+                        <p>Supplies & equipment</p>
+                    </div>
+
+                    <!-- Maintenance -->
+                    <div class="dept-card" data-dept="maintenance">
+                        <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="dept-icon"><i class="fa-solid fa-wrench"></i></div>
+                        <h4>Maintenance</h4>
+                        <p>Facility repairs & upkeep</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: Select Room -->
+            <section class="step-section">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3>Select Room</h3>
+                </div>
+
+                <div class="room-selection-container">
+
+                    <!-- Block A (101-111) -->
+                    <div class="room-category">
+                        <button class="room-category-header">
+                            <span>Block A (Rooms 101 - 111)</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="room-list hidden">
+                            <button class="room-chip" data-room="Room 101">Room 101</button>
+                            <button class="room-chip" data-room="Room 102">Room 102</button>
+                            <button class="room-chip" data-room="Room 103">Room 103</button>
+                            <button class="room-chip" data-room="Room 104">Room 104</button>
+                            <button class="room-chip" data-room="Room 105">Room 105</button>
+                            <button class="room-chip" data-room="Room 106">Room 106</button>
+                            <button class="room-chip" data-room="Room 107">Room 107</button>
+                            <button class="room-chip" data-room="Room 108">Room 108</button>
+                            <button class="room-chip" data-room="Room 109">Room 109</button>
+                            <button class="room-chip" data-room="Room 110">Room 110</button>
+                            <button class="room-chip" data-room="Room 111">Room 111</button>
+                        </div>
+                    </div>
+
+                    <!-- Block B (201-222) -->
+                    <div class="room-category">
+                        <button class="room-category-header">
+                            <span>Block B (Rooms 201 - 222)</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="room-list hidden">
+                            <button class="room-chip" data-room="Room 201">Room 201</button>
+                            <button class="room-chip" data-room="Room 202">Room 202</button>
+                            <button class="room-chip" data-room="Room 203">Room 203</button>
+                            <button class="room-chip" data-room="Room 204">Room 204</button>
+                            <button class="room-chip" data-room="Room 220">Room 220</button>
+                            <button class="room-chip" data-room="Room 221">Room 221</button>
+                            <button class="room-chip" data-room="Room 222">Room 222</button>
+                        </div>
+                    </div>
+
+                    <!-- Block C (301-303) -->
+                    <div class="room-category">
+                        <button class="room-category-header">
+                            <span>Block C (Rooms 301 - 303)</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="room-list hidden">
+                            <button class="room-chip" data-room="Room 301">Room 301</button>
+                            <button class="room-chip" data-room="Room 302">Room 302</button>
+                            <button class="room-chip" data-room="Room 303">Room 303</button>
+                        </div>
+                    </div>
+
+                    <!-- Hostels -->
+                    <div class="room-category">
+                        <button class="room-category-header">
+                            <span>Hostels</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="room-list hidden">
+                            <button class="room-chip" data-room="Hostel A">Hostel A</button>
+                            <button class="room-chip" data-room="Hostel B">Hostel B</button>
+                            <button class="room-chip" data-room="Hostel C">Hostel C</button>
+                        </div>
+                    </div>
+
+                    <!-- Auditorium -->
+                    <div class="room-category">
+                        <button class="room-category-header">
+                            <span>Auditoriums</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="room-list hidden">
+                            <button class="room-chip" data-room="Auditorium 1">Auditorium 1</button>
+                            <button class="room-chip" data-room="Auditorium 2">Auditorium 2</button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Step 3: Issue Details -->
+            <section class="step-section">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h3>Issue Details</h3>
+                </div>
+
+                <div class="details-form">
+                    <div class="form-group-dark">
+                        <label>Subject Line</label>
+                        <input type="text" id="subject" placeholder="Brief summary of the problem">
+                    </div>
+
+                    <div class="form-group-dark">
+                        <label>Your Course / Program</label>
+                        <input type="text" id="course" placeholder="e.g. Diploma in Public Administration">
+                    </div>
+
+                    <div class="form-group-dark">
+                        <div class="label-row">
+                            <label>Description</label>
+                            <span class="char-count">Min 20 characters</span>
+                        </div>
+                        <textarea id="description" rows="5"
+                            placeholder="Please provide details about the issue you are experiencing..."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <div class="attachment-section">
+                        <div class="attachment-btn" id="attachBtn">
+                            <i class="fa-solid fa-paperclip"></i>
+                            Attach Screenshot (Image only)
+                        </div>
+                        <input type="file" id="fileInput" accept="image/*" hidden>
+                        <div id="imagePreviewContainer" class="hidden"></div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn-text">Save Draft</button>
+                        <button class="btn-primary" id="submitIssue">Send Report</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="dashboard-footer">
+            <div class="footer-left">
+                <a href="#" onclick="openHistoryModal(); return false;"><i class="fa-solid fa-clock-rotate-left"></i>
+                    View Submission History</a>
+                <a href="#"><i class="fa-solid fa-circle-question"></i> Support Center</a>
+            </div>
+            <div class="footer-right">
+                <p>&copy; 2024 Kenya School of Government. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- AI Chatbot UI -->
+    <div class="chatbot-trigger" id="chatbotTrigger">
+        <i class="fa-solid fa-robot"></i>
+    </div>
+
+    <div class="chatbot-container hidden" id="chatbotContainer">
+        <div class="chat-header">
+            <div class="chat-bot-info">
+                <div class="bot-avatar">
+                    <i class="fa-solid fa-headset"></i>
+                </div>
+                <div class="bot-details">
+                    <h4>KSG Smart Assistant</h4>
+                    <span>Active Now</span>
+                </div>
+            </div>
+            <div class="close-chat" id="closeChat">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+                Hello! I'm your KSG Assistant. How can I help you with your institutional requests today?
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <div class="suggestion-chips">
+                <div class="chip">ICT Help</div>
+                <div class="chip">Ticket Status</div>
+                <div class="chip">Hostel Issues</div>
+                <div class="chip">Finance Query</div>
+            </div>
+            <div class="input-wrapper">
+                <input type="text" id="chatInput" placeholder="Type your message...">
+                <div class="send-btn" id="sendChat">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submission History Modal -->
+    <div class="modal-overlay hidden" id="historyModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-clock-rotate-left"></i> Submission History</h2>
+                <button class="modal-close" onclick="closeModal('historyModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="historyList" class="history-list">
+                    <!-- Dynamic -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div class="modal-overlay hidden" id="feedbackModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-comment-dots"></i> Service Feedback</h2>
+                <button class="modal-close" onclick="closeModal('feedbackModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="feedbackTicketId">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">How would you rate the resolution of <span
+                            id="feedbackRef" style="color: var(--primary); font-weight: 700;">#TK-0000</span>?</p>
+                    <div class="star-rating" id="starRating">
+                        <i class="fa-solid fa-star" data-rating="1"></i>
+                        <i class="fa-solid fa-star" data-rating="2"></i>
+                        <i class="fa-solid fa-star" data-rating="3"></i>
+                        <i class="fa-solid fa-star" data-rating="4"></i>
+                        <i class="fa-solid fa-star" data-rating="5"></i>
+                    </div>
+                </div>
+                <div class="form-group-dark">
+                    <label>Additional Comments</label>
+                    <textarea id="feedbackComment" rows="3"
+                        placeholder="Tell us more about your experience..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="submitFeedback()" style="width: 100%;">Submit Feedback</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/chatbot.js"></script>
+    <style>
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .history-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-info h4 {
+            margin-bottom: 4px;
+            color: #fff;
+        }
+
+        .history-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .star-rating {
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .star-rating i.active {
+            color: #f59e0b;
+        }
+
+        .star-rating i:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</body>
+
+</html>
